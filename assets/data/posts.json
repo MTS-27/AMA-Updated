@@ -1,0 +1,25 @@
+{
+  "bulletins": [
+    {
+      "id": 1,
+      "title": "Welcome to the New AMA Website!",
+      "content": "We are excited to launch our new website. Explore our resources and get involved!",
+      "date": "2025-01-09",
+      "type": "announcement"
+    }
+  ],
+  "upcoming_events": [
+    {
+        "id": 101,
+        "title": "Apprenticeship Q&A Webinar",
+        "date": "May 28, 2025",
+        "type": "event"
+    },
+    {
+        "id": 102,
+        "title": "Community Info Session",
+        "date": "June 12, 2025",
+        "type": "event"
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources | AMA UK</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { navy: '#0A1D3A', lightNavy: '#162A4D', gold: '#D4AF37', accentBlue: '#368CD6' }
+          },
+          fontFamily: { sans: ['Outfit', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+
+<body class="bg-brand-navy text-white font-sans antialiased overflow-x-hidden">
+
+  <!-- Decoration -->
+  <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-gold opacity-5 rounded-full blur-[120px]"></div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="fixed w-full top-0 z-50 backdrop-blur-md bg-brand-navy/80 border-b border-white/10" id="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center gap-3 group">
+        <img src="../assets/images/logo.png" alt="AMA Logo"
+          class="h-10 w-auto transition-transform duration-300 group-hover:scale-105" />
+        <span class="font-bold text-xl tracking-tight hidden md:block">AMA UK</span>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="../index.html" class="text-sm font-medium hover:text-brand-gold transition-colors">Home</a>
+        <a href="about.html" class="text-sm font-medium hover:text-brand-gold transition-colors">About</a>
+        <a href="team.html" class="text-sm font-medium hover:text-brand-gold transition-colors">Team</a>
+        <a href="get-involved.html" class="text-sm font-medium hover:text-brand-gold transition-colors">Get Involved</a>
+        <a href="resources.html"
+          class="text-sm font-medium hover:text-brand-gold transition-colors text-brand-gold">Resources</a>
+        <a href="events.html" class="text-sm font-medium hover:text-brand-gold transition-colors">Events</a>
+        <a href="contact.html" class="text-sm font-medium hover:text-brand-gold transition-colors">Contact</a>
+        <a href="../admin.html"
+          class="px-4 py-2 text-xs font-semibold text-brand-navy bg-brand-gold rounded hover:bg-white transition-colors">Admin</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden text-white"><svg class="w-8 h-8" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg></button>
+    </div>
+  </header>
+
+  <!-- Mobile Sidebar -->
+  <div id="mobileMenu"
+    class="fixed inset-y-0 right-0 w-80 bg-brand-navy border-l border-white/10 shadow-2xl transform translate-x-full transition-transform duration-300 z-[60] p-6 flex flex-col">
+    <div class="flex justify-end mb-8"><button id="closeMenu" class="text-white">✕</button></div>
+    <nav class="flex flex-col space-y-6">
+      <a href="../index.html" class="text-xl font-medium hover:text-brand-gold">Home</a>
+      <a href="about.html" class="text-xl font-medium hover:text-brand-gold">About</a>
+      <a href="team.html" class="text-xl font-medium hover:text-brand-gold">Team</a>
+      <a href="get-involved.html" class="text-xl font-medium hover:text-brand-gold">Get Involved</a>
+      <a href="resources.html" class="text-xl font-medium text-brand-gold">Resources</a>
+      <a href="events.html" class="text-xl font-medium hover:text-brand-gold">Events</a>
+      <a href="contact.html" class="text-xl font-medium hover:text-brand-gold">Contact</a>
+      <a href="../admin.html" class="text-xl font-medium text-brand-gold">Admin</a>
+    </nav>
+  </div>
+  <div id="menuOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[55] hidden opacity-0 transition-opacity">
+  </div>
+
+  <!-- Main Content -->
+  <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto space-y-12">
+
+    <div class="text-center max-w-4xl mx-auto" data-aos="fade-down">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">Apprenticeship <span class="text-brand-gold">Resources</span></h1>
+      <p class="text-xl text-gray-400">Guides, links, and expert advice to help you succeed.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Resource Card 1 -->
+      <div class="glass p-6 rounded-xl hover:-translate-y-2 transition-all duration-300 group cursor-pointer"
+        data-aos="fade-up" data-aos-delay="0">
+        <div
+          class="h-12 w-12 bg-brand-lightNavy rounded-full flex items-center justify-center mb-4 group-hover:bg-brand-gold transition-colors">
+          <span class="text-2xl">📚</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">What is an apprenticeship?</h3>
+        <p class="text-gray-400 text-sm mb-4">A complete breakdown of levels, sectors, and benefits.</p>
+        <a href="#" class="text-brand-gold text-sm font-semibold hover:underline">Read Guide →</a>
+      </div>
+
+      <!-- Resource Card 2 -->
+      <div class="glass p-6 rounded-xl hover:-translate-y-2 transition-all duration-300 group cursor-pointer"
+        data-aos="fade-up" data-aos-delay="100">
+        <div
+          class="h-12 w-12 bg-brand-lightNavy rounded-full flex items-center justify-center mb-4 group-hover:bg-brand-gold transition-colors">
+          <span class="text-2xl">📝</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">How to Apply</h3>
+        <p class="text-gray-400 text-sm mb-4">Step-by-step tips for CVs, applications, and interviews.</p>
+        <a href="#" class="text-brand-gold text-sm font-semibold hover:underline">Read Guide →</a>
+      </div>
+
+      <!-- Resource Card 3 -->
+      <div class="glass p-6 rounded-xl hover:-translate-y-2 transition-all duration-300 group cursor-pointer"
+        data-aos="fade-up" data-aos-delay="200">
+        <div
+          class="h-12 w-12 bg-brand-lightNavy rounded-full flex items-center justify-center mb-4 group-hover:bg-brand-gold transition-colors">
+          <span class="text-2xl">🌟</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Success Stories</h3>
+        <p class="text-gray-400 text-sm mb-4">Inspiring journeys from Muslim apprentices across the UK.</p>
+        <a href="#" class="text-brand-gold text-sm font-semibold hover:underline">View Stories →</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-white/5 bg-black/20 backdrop-blur-lg py-8 text-center text-gray-500 text-sm">
+    &copy; 2025 Association of Muslim Apprentices. All rights reserved.
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    AOS.init({ once: true, duration: 800 });
+    const menuBtn = document.getElementById("menuBtn");
+    const closeMenu = document.getElementById("closeMenu");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const menuOverlay = document.getElementById("menuOverlay");
+    function toggleMenu() {
+      mobileMenu.classList.toggle("translate-x-full");
+      if (mobileMenu.classList.contains("translate-x-full")) {
+        menuOverlay.classList.add("hidden"); setTimeout(() => menuOverlay.classList.remove("opacity-100"), 50);
+      } else {
+        menuOverlay.classList.remove("hidden"); setTimeout(() => menuOverlay.classList.add("opacity-100"), 10);
+      }
+    }
+    menuBtn.addEventListener("click", toggleMenu); closeMenu.addEventListener("click", toggleMenu); menuOverlay.addEventListener("click", toggleMenu);
+  </script>
+</body>
+
+</html>
