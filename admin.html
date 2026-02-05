@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | AMA UK</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#0A1D3A',
+                            lightNavy: '#162A4D',
+                            gold: '#D4AF37',
+                            accentBlue: '#368CD6',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0A1D3A;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body class="bg-brand-navy min-h-screen">
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="fixed inset-0 z-50 bg-brand-navy flex items-center justify-center p-4">
+        <div class="glass p-8 rounded-xl max-w-sm w-full text-center">
+            <h2 class="text-2xl font-bold mb-4 text-white">Admin Access</h2>
+            <p class="text-gray-400 mb-6 text-sm">Enter password to manage content.</p>
+            <input type="password" id="passwordInput" placeholder="Password"
+                class="w-full bg-brand-navy border border-white/20 rounded p-3 text-white mb-4 focus:border-brand-gold outline-none"
+                onkeyup="if(event.key === 'Enter') checkAuth()">
+            <button onclick="checkAuth()"
+                class="w-full bg-brand-gold text-brand-navy font-bold py-3 rounded hover:bg-white transition-colors mb-4">Login</button>
+
+            <a href="index.html"
+                class="block text-sm text-gray-400 hover:text-white transition-colors flex items-center justify-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Home
+            </a>
+            <p id="authError" class="text-red-400 text-xs mt-3 hidden">Invalid Password</p>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="hidden min-h-screen">
+        <!-- Nav -->
+        <nav class="border-b border-white/10 bg-brand-navy/90 sticky top-0 z-40 backdrop-blur">
+            <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+                <span class="font-bold text-xl text-brand-gold">AMA Admin</span>
+                <div class="flex gap-4">
+                    <a href="index.html" class="text-sm text-gray-400 hover:text-white flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Back to Site
+                    </a>
+                    <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-6 py-10">
+
+            <!-- Actions Header -->
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-white">Dashboard</h1>
+                <button onclick="saveChanges()" id="saveBtn"
+                    class="bg-brand-gold text-brand-navy px-6 py-2 rounded-lg font-bold hover:bg-white transition-colors flex items-center gap-2 shadow-lg shadow-brand-gold/20">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                        </path>
+                    </svg>
+                    Save Changes
+                </button>
+            </div>
+            <p id="statusMsg" class="mb-4 text-sm text-center h-5"></p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Bulletins Section -->
+                <section class="glass rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <span class="w-2 h-8 bg-brand-accentBlue rounded-full"></span>
+                            Bulletins
+                        </h2>
+                        <button onclick="openModal('bulletin')"
+                            class="text-sm bg-brand-lightNavy hover:bg-brand-accentBlue px-3 py-1 rounded transition-colors">+
+                            Add New</button>
+                    </div>
+                    <div id="admin-bulletins" class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                        <!-- Filled by JS -->
+                    </div>
+                </section>
+
+                <!-- Events Section -->
+                <section class="glass rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <span class="w-2 h-8 bg-brand-gold rounded-full"></span>
+                            Events
+                        </h2>
+                        <button onclick="openModal('event')"
+                            class="text-sm bg-brand-lightNavy hover:bg-brand-gold hover:text-brand-navy px-3 py-1 rounded transition-colors">+
+                            Add New</button>
+                    </div>
+                    <div id="admin-events" class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                        <!-- Filled by JS -->
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="itemModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+        <div class="bg-brand-navy border border-white/10 p-8 rounded-xl max-w-lg w-full relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">✕</button>
+            <h2 id="modalTitle" class="text-2xl font-bold mb-6">Add New Item</h2>
+
+            <form id="itemForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <input type="hidden" id="itemType">
+
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Title</label>
+                    <input type="text" id="itemTitle" required
+                        class="w-full bg-brand-lightNavy border border-white/10 rounded p-2 text-white focus:border-brand-gold outline-none">
+                </div>
+
+                <div id="contentField">
+                    <label class="block text-sm text-gray-400 mb-1">Content</label>
+                    <textarea id="itemContent" rows="4"
+                        class="w-full bg-brand-lightNavy border border-white/10 rounded p-2 text-white focus:border-brand-gold outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Date</label>
+                        <input type="date" id="itemDate" required
+                            class="w-full bg-brand-lightNavy border border-white/10 rounded p-2 text-white focus:border-brand-gold outline-none">
+                    </div>
+                    <div id="timeField" class="hidden">
+                        <label class="block text-sm text-gray-400 mb-1">Time (Optional)</label>
+                        <input type="text" id="itemTime" placeholder="e.g. 2:00 PM"
+                            class="w-full bg-brand-lightNavy border border-white/10 rounded p-2 text-white focus:border-brand-gold outline-none">
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-brand-gold text-brand-navy font-bold py-3 rounded mt-4 hover:bg-white transition-colors">Add
+                    Item</button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentData = { bulletins: [], upcoming_events: [] };
+        const PASSWORD = "admin"; // Simple client-side gate (Not secure, but requested)
+
+        // Load Data
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Check session
+                if (sessionStorage.getItem('auth') === 'true') {
+                    showDashboard();
+                    await fetchData();
+                }
+            } catch (e) { console.error(e); }
+        });
+
+        // Auth Logic
+        function checkAuth() {
+            const input = document.getElementById('passwordInput').value;
+            // In real scenario, validate with server. Here we just gate the UI.
+            // The actual write operation in PHP also checks for 'admin123'
+            if (input === 'admin123') {
+                sessionStorage.setItem('auth', 'true');
+                sessionStorage.setItem('token', input); // Store for API call
+                showDashboard();
+                fetchData();
+            } else {
+                document.getElementById('authError').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('auth');
+            sessionStorage.removeItem('token');
+            location.reload();
+        }
+
+        function showDashboard() {
+            document.getElementById('authModal').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+
+        // Data Management
+        async function fetchData() {
+            try {
+                const res = await fetch('assets/data/posts.json?v=' + Date.now()); // bust cache
+                currentData = await res.json();
+                renderLists();
+            } catch (e) {
+                console.error("Failed to fetch data", e);
+            }
+        }
+
+        function renderLists() {
+            const bulletinsList = document.getElementById('admin-bulletins');
+            const eventsList = document.getElementById('admin-events');
+
+            // Render Bulletins
+            bulletinsList.innerHTML = currentData.bulletins.map((item, index) => `
+            <div class="bg-brand-lightNavy p-4 rounded border border-white/5 flex justify-between items-start group">
+                <div>
+                    <h4 class="font-bold text-white">${item.title}</h4>
+                    <p class="text-xs text-gray-400 mb-2">${item.date}</p>
+                    <p class="text-sm text-gray-300 line-clamp-2">${item.content}</p>
+                </div>
+                <button onclick="deleteItem('bulletins', ${index})" class="text-red-400 hover:text-red-300 p-1 opacity-50 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
+            </div>
+        `).join('');
+
+            // Render Events
+            eventsList.innerHTML = currentData.upcoming_events.map((item, index) => `
+            <div class="bg-brand-lightNavy p-4 rounded border border-white/5 flex justify-between items-center group">
+                <div class="flex items-center gap-4">
+                    <div class="bg-brand-navy p-2 rounded text-center border border-white/10 w-16">
+                        <span class="block text-xs font-bold text-brand-gold uppercase">${new Date(item.date).toLocaleString('default', { month: 'short' })}</span>
+                        <span class="block text-lg font-bold">${new Date(item.date).getDate()}</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white">${item.title}</h4>
+                        <p class="text-xs text-gray-400">${item.time || ''}</p>
+                    </div>
+                </div>
+                <button onclick="deleteItem('upcoming_events', ${index})" class="text-red-400 hover:text-red-300 p-1 opacity-50 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
+            </div>
+        `).join('');
+        }
+
+        // Add/Delete Logic
+        function deleteItem(type, index) {
+            if (confirm("Are you sure you want to delete this?")) {
+                currentData[type].splice(index, 1);
+                renderLists();
+                markUnsaved();
+            }
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('itemType').value;
+            const title = document.getElementById('itemTitle').value;
+            const date = document.getElementById('itemDate').value;
+
+            const newItem = {
+                id: Date.now(),
+                title,
+                date,
+                type: type === 'bulletin' ? 'announcement' : 'event'
+            };
+
+            if (type === 'bulletin') {
+                newItem.content = document.getElementById('itemContent').value;
+                currentData.bulletins.unshift(newItem); // Add to top
+            } else {
+                newItem.time = document.getElementById('itemTime').value;
+                // sort events by date
+                currentData.upcoming_events.push(newItem);
+                currentData.upcoming_events.sort((a, b) => new Date(a.date) - new Date(b.date));
+            }
+
+            renderLists();
+            closeModal();
+            markUnsaved();
+        }
+
+        // Modal Controls
+        function openModal(type) {
+            document.getElementById('itemModal').classList.remove('hidden');
+            document.getElementById('itemType').value = type;
+            document.getElementById('modalTitle').innerText = type === 'bulletin' ? 'Add New Bulletin' : 'Add New Event';
+            document.getElementById('itemForm').reset();
+
+            // Toggle fields
+            const contentField = document.getElementById('contentField');
+            const timeField = document.getElementById('timeField');
+
+            if (type === 'bulletin') {
+                contentField.classList.remove('hidden');
+                document.getElementById('itemContent').required = true;
+                timeField.classList.add('hidden');
+            } else {
+                contentField.classList.add('hidden');
+                document.getElementById('itemContent').required = false;
+                timeField.classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('itemModal').classList.add('hidden');
+        }
+
+        // Saving Changes
+        function markUnsaved() {
+            const status = document.getElementById('statusMsg');
+            status.innerText = "You have unsaved changes!";
+            status.className = "mb-4 text-sm text-center h-5 text-brand-gold animate-pulse";
+        }
+
+        async function saveChanges() {
+            const btn = document.getElementById('saveBtn');
+            const originalText = btn.innerHTML;
+            const status = document.getElementById('statusMsg');
+
+            btn.disabled = true;
+            btn.innerHTML = "Saving...";
+
+            try {
+                // Prepare package with password for auth
+                const payload = { ...currentData, password: sessionStorage.getItem('token') };
+
+                const response = await fetch('api/save_posts.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    status.innerText = "Changes saved successfully!";
+                    status.className = "mb-4 text-sm text-center h-5 text-green-400";
+                    setTimeout(() => status.innerText = "", 3000);
+                } else {
+                    const err = await response.json();
+                    throw new Error(err.message || "Server Error");
+                }
+            } catch (error) {
+                console.error(error);
+                status.innerText = "Error: " + error.message;
+                status.className = "mb-4 text-sm text-center h-5 text-red-400 font-bold";
+                alert("Failed to save changes. Make sure PHP is supported on this server.\n" + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+    </script>
+</body>
+
+</html>
